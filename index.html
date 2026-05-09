@@ -1,0 +1,395 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ethio-Delala – Premium Ethiopian Real Estate</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <span class="logo-icon">🏡</span>
+    <div>
+      <span class="logo-text">Ethio-Delala</span>
+      <span class="logo-sub">Real Estate</span>
+    </div>
+  </div>
+  <ul class="sidebar-links">
+    <li><a href="#listings"  class="nav-link active"><i class="fa-solid fa-house"></i><span>Listings</span></a></li>
+    <li><a href="#vr-banner" class="nav-link"><i class="fa-solid fa-vr-cardboard"></i><span>VR Tours</span></a></li>
+    <li><a href="#compare"   class="nav-link"><i class="fa-solid fa-scale-balanced"></i><span>Compare</span></a></li>
+    <li><a href="#mortgage"  class="nav-link"><i class="fa-solid fa-calculator"></i><span>Mortgage</span></a></li>
+    <li><a href="#map"       class="nav-link"><i class="fa-solid fa-map-location-dot"></i><span>Map View</span></a></li>
+    <li><a href="#agents"    class="nav-link"><i class="fa-solid fa-user-tie"></i><span>Agents</span></a></li>
+    <li><a href="#about"     class="nav-link"><i class="fa-solid fa-leaf"></i><span>About</span></a></li>
+    <li><a href="dashboard.html" class="nav-link"><i class="fa-solid fa-gauge"></i><span>Dashboard</span></a></li>
+  </ul>
+  <div class="sidebar-contact">
+    <p>Need help?</p>
+    <a href="tel:+251911000000" class="contact-btn"><i class="fa-solid fa-phone"></i> Call Us</a>
+  </div>
+</nav>
+<button class="hamburger" id="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- HERO -->
+<header class="hero" id="hero">
+  <div class="hero-bg-slider" id="heroBgSlider"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Ethiopia's Premier Property Platform</p>
+    <h1 class="hero-title">Find Your <em>Perfect</em> Home</h1>
+    <p class="hero-sub">Handpicked estates, penthouses &amp; villas — to rent or own. Every listing includes a full <strong>360° VR Tour</strong>.</p>
+    <div class="hero-search">
+      <input type="text" id="heroSearch" placeholder="Search by city, address or property name…" />
+      <button onclick="doHeroSearch()"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+    </div>
+    <div class="hero-quick-stats">
+      <div class="hqs"><span class="hqs-n">1,200+</span><span class="hqs-l">Properties</span></div>
+      <div class="hqs"><span class="hqs-n">98%</span><span class="hqs-l">Satisfaction</span></div>
+      <div class="hqs"><span class="hqs-n">20+</span><span class="hqs-l">Years</span></div>
+      <div class="hqs"><span class="hqs-n">100%</span><span class="hqs-l">VR Ready</span></div>
+    </div>
+  </div>
+  <div class="hero-scroll-hint"><i class="fa-solid fa-chevron-down"></i></div>
+</header>
+
+<!-- VR TOUR BANNER -->
+<section class="vr-banner" id="vr-banner">
+  <div class="vr-banner-inner">
+    <div class="vr-banner-text">
+      <div class="vr-badge"><i class="fa-solid fa-vr-cardboard"></i> Exclusive Feature</div>
+      <h2>We Deliver a Full VR Tour to Every Home</h2>
+      <p>Skip the tiring commute. Ethio-Delala provides an immersive <strong>360° Virtual Reality tour</strong> for every single listing — so you can walk through any property from your sofa, office, or anywhere in the world.</p>
+      <ul class="vr-benefits">
+        <li><i class="fa-solid fa-circle-check"></i> No physical visit needed to shortlist</li>
+        <li><i class="fa-solid fa-circle-check"></i> Explore every room in full 360° — drag, spin, look up &amp; down</li>
+        <li><i class="fa-solid fa-circle-check"></i> Works on phone, tablet, desktop &amp; VR headset</li>
+        <li><i class="fa-solid fa-circle-check"></i> Gold hotspot markers highlight key features</li>
+        <li><i class="fa-solid fa-circle-check"></i> Saves you time, travel cost &amp; energy</li>
+      </ul>
+      <button onclick="startDemoTour()" class="vr-cta"><i class="fa-solid fa-door-open"></i> Start Touring Now</button>
+    </div>
+    <div class="vr-banner-visual">
+      <div class="vr-headset-wrap">
+        <div class="vr-headset-icon">
+          <i class="fa-solid fa-vr-cardboard"></i>
+        </div>
+        <div class="vr-orbit vr-orbit-1"></div>
+        <div class="vr-orbit vr-orbit-2"></div>
+        <div class="vr-orbit vr-orbit-3"></div>
+        <div class="vr-float-tag vr-tag-1"><i class="fa-solid fa-rotate"></i> 360°</div>
+        <div class="vr-float-tag vr-tag-2"><i class="fa-solid fa-mobile-screen"></i> Mobile</div>
+        <div class="vr-float-tag vr-tag-3"><i class="fa-solid fa-house"></i> Every Home</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LISTINGS -->
+<section class="listings-section" id="listings">
+  <div class="section-header">
+    <h2>Our Properties</h2>
+    <p>Discover spaces crafted for the discerning few — each with a full 360° VR tour.</p>
+  </div>
+  <div class="toggle-wrapper">
+    <div class="toggle-track" id="toggleTrack">
+      <span class="toggle-label rent-label active-label" id="rentLabel">For Rent</span>
+      <div class="toggle-thumb" id="toggleThumb"></div>
+      <span class="toggle-label sell-label" id="sellLabel">For Sale</span>
+    </div>
+  </div>
+  <div class="filters-bar">
+    <select class="filter-select" id="filterType"><option value="all">All Types</option><option value="house">House</option><option value="apartment">Apartment</option><option value="condo">Condo</option><option value="villa">Villa</option></select>
+    <select class="filter-select" id="filterBeds"><option value="all">Any Beds</option><option value="1">1+ Bed</option><option value="2">2+ Beds</option><option value="3">3+ Beds</option><option value="4">4+ Beds</option></select>
+    <select class="filter-select" id="filterBaths"><option value="all">Any Baths</option><option value="1">1+ Bath</option><option value="2">2+ Baths</option><option value="3">3+ Baths</option></select>
+    <select class="filter-select" id="filterSort"><option value="default">Sort: Default</option><option value="price-asc">Price: Low → High</option><option value="price-desc">Price: High → Low</option></select>
+    <button class="filter-reset-btn" onclick="resetFilters()"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+  </div>
+  <div class="cards-grid" id="cardsGrid"></div>
+</section>
+
+<!-- COMPARE -->
+<section class="compare-section" id="compare">
+  <div class="section-header">
+    <h2>Compare Properties</h2>
+    <p>Drag any listing card into a tray to compare side by side.</p>
+  </div>
+  <div class="compare-arena">
+    <div class="compare-tray" id="trayLeft" ondragover="event.preventDefault()" ondrop="dropCompare(event,'left')">
+      <div class="tray-placeholder"><i class="fa-solid fa-arrow-right"></i> Drop here</div>
+    </div>
+    <div class="compare-vs"><span>VS</span></div>
+    <div class="compare-tray" id="trayRight" ondragover="event.preventDefault()" ondrop="dropCompare(event,'right')">
+      <div class="tray-placeholder"><i class="fa-solid fa-arrow-left"></i> Drop here</div>
+    </div>
+  </div>
+</section>
+
+<!-- MORTGAGE CALCULATOR -->
+<section class="mortgage-section" id="mortgage">
+  <div class="section-header">
+    <h2>Mortgage Calculator</h2>
+    <p>Estimate your monthly repayments instantly.</p>
+  </div>
+  <div class="mortgage-card">
+    <div class="mortgage-inputs">
+      <div class="m-group">
+        <label>Home Price (ETB)</label>
+        <input type="number" id="mPrice" value="5000000" oninput="calcMortgage()" />
+      </div>
+      <div class="m-group">
+        <label>Down Payment: <span id="mDownVal">20%</span></label>
+        <input type="range" id="mDown" min="5" max="50" value="20" oninput="calcMortgage(); document.getElementById('mDownVal').textContent=this.value+'%'" />
+      </div>
+      <div class="m-group">
+        <label>Interest Rate: <span id="mRateVal">6.5%</span></label>
+        <input type="range" id="mRate" min="1" max="15" step="0.1" value="6.5" oninput="calcMortgage(); document.getElementById('mRateVal').textContent=this.value+'%'" />
+      </div>
+      <div class="m-group">
+        <label>Loan Term</label>
+        <select id="mTerm" onchange="calcMortgage()">
+          <option value="10">10 years</option>
+          <option value="15">15 years</option>
+          <option value="20">20 years</option>
+          <option value="30" selected>30 years</option>
+        </select>
+      </div>
+    </div>
+    <div class="mortgage-result">
+      <div class="m-result-ring">
+        <svg viewBox="0 0 120 120" class="m-ring-svg">
+          <circle cx="60" cy="60" r="50" fill="none" stroke="#e8d5b7" stroke-width="10"/>
+          <circle cx="60" cy="60" r="50" fill="none" stroke="#D4A373" stroke-width="10" stroke-dasharray="314" stroke-dashoffset="78" stroke-linecap="round" transform="rotate(-90 60 60)" id="mRingFill"/>
+        </svg>
+        <div class="m-ring-text">
+          <span class="m-monthly" id="mMonthly">ETB 35,280</span>
+          <span class="m-label">/month</span>
+        </div>
+      </div>
+      <div class="m-breakdown">
+        <div class="m-row"><span>Loan Amount</span><strong id="mLoan">ETB 4,000,000</strong></div>
+        <div class="m-row"><span>Total Interest</span><strong id="mInterest">ETB 7,100,800</strong></div>
+        <div class="m-row"><span>Total Cost</span><strong id="mTotal">ETB 11,100,800</strong></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MAP VIEW -->
+<section class="map-section" id="map">
+  <div class="section-header">
+    <h2>Property Map</h2>
+    <p>Explore listings by location.</p>
+  </div>
+  <div class="map-container" id="mapContainer">
+    <div class="map-bg">
+      <div class="map-pins" id="mapPins"></div>
+      <div class="map-grid-lines"></div>
+    </div>
+    <div class="map-popup" id="mapPopup"></div>
+  </div>
+</section>
+
+<!-- AGENTS -->
+<section class="agents-section" id="agents">
+  <div class="section-header">
+    <h2>Meet Our Agents</h2>
+    <p>Expert brokers ready to guide you home.</p>
+  </div>
+  <div class="agents-grid" id="agentsGrid"></div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-section" id="testimonials">
+  <div class="section-header">
+    <h2>What Clients Say</h2>
+  </div>
+  <div class="testimonials-track" id="testimonialsTrack">
+    <div class="testimonial-card">
+      <div class="t-stars">★★★★★</div>
+      <p>"Ethio-Delala found us our dream home in under two weeks. The 360° VR tour saved us three long drives across Addis!"</p>
+      <div class="t-author"><img src="https://randomuser.me/api/portraits/women/12.jpg" alt=""/><span>Selam T., Addis Ababa</span></div>
+    </div>
+    <div class="testimonial-card">
+      <div class="t-stars">★★★★★</div>
+      <p>"The mortgage calculator helped me understand exactly what I could afford. Closed in 30 days without stress."</p>
+      <div class="t-author"><img src="https://randomuser.me/api/portraits/men/18.jpg" alt=""/><span>Dawit K., Bahir Dar</span></div>
+    </div>
+    <div class="testimonial-card">
+      <div class="t-stars">★★★★★</div>
+      <p>"I toured 6 properties in one afternoon from my office. The VR is so real — I bought without a single physical visit!"</p>
+      <div class="t-author"><img src="https://randomuser.me/api/portraits/women/55.jpg" alt=""/><span>Hiwot M., Hawassa</span></div>
+    </div>
+    <div class="testimonial-card">
+      <div class="t-stars">★★★★★</div>
+      <p>"The compare tool is genius. I compared 4 villas side by side and made my decision in minutes. Highly recommend."</p>
+      <div class="t-author"><img src="https://randomuser.me/api/portraits/men/62.jpg" alt=""/><span>Yonas B., Dire Dawa</span></div>
+    </div>
+  </div>
+  <div class="t-dots" id="tDots"></div>
+</section>
+
+<!-- ABOUT -->
+<section class="about-section" id="about">
+  <div class="about-inner">
+    <div class="about-text">
+      <h2>About Ethio-Delala</h2>
+      <p>We believe a home is more than four walls — it's a feeling. Since 2005, Ethio-Delala has matched discerning Ethiopian clients with properties that speak to the soul, from Addis Ababa penthouses to lakeside villas.</p>
+      <p>Every listing includes a full <strong>360° immersive VR tour</strong>, a cinematic demo video, and a dedicated broker — so you never have to make a tiring physical visit just to shortlist a property.</p>
+    </div>
+    <div class="about-stats">
+      <div class="stat"><span class="stat-num">1,200+</span><span class="stat-label">Properties Sold</span></div>
+      <div class="stat"><span class="stat-num">98%</span><span class="stat-label">Client Satisfaction</span></div>
+      <div class="stat"><span class="stat-num">20+</span><span class="stat-label">Years Experience</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand"><span class="logo-icon">🏡</span><span>Ethio-Delala Real Estate</span></div>
+    <p class="footer-copy">© 2026 Ethio-Delala. All rights reserved.</p>
+    <div class="footer-links">
+      <a href="#">Privacy</a><a href="#">Terms</a><a href="dashboard.html">Broker Login</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== VIRTUAL TOUR MODAL ===== -->
+<div class="tour-modal" id="tourModal">
+  <div class="door-frame" id="doorFrame">
+    <div class="door-panel left-panel"></div>
+    <div class="door-panel right-panel"></div>
+  </div>
+  <div class="tour-content" id="tourContent">
+    <button class="tour-close" id="tourClose"><i class="fa-solid fa-xmark"></i></button>
+    <div class="tour-header">
+      <div class="tour-title-row">
+        <h3 id="tourTitle">Property Tour</h3>
+        <span class="vr-pill"><i class="fa-solid fa-vr-cardboard"></i> 360° VR</span>
+      </div>
+    </div>
+    <div class="tour-body">
+
+      <!-- 360 VIEWER -->
+      <div class="pano360-wrapper" id="pano360Wrapper">
+        <div class="pano360-header">
+          <span class="pano360-label" id="pano360Label">360° Virtual Tour</span>
+          <span class="pano360-hint"><i class="fa-solid fa-hand-pointer"></i> Drag to look around 360°</span>
+        </div>
+        <!-- Full 360 cube viewer — room nav is built inside the iframe -->
+        <iframe
+          id="tour360Frame"
+          src="tour360.html"
+          class="tour360-iframe"
+          frameborder="0"
+          allowfullscreen
+          title="360 Virtual Tour"
+        ></iframe>
+      </div>
+
+      <!-- VINTAGE TV -->
+      <div class="tv-wrapper">
+        <div class="tv-frame">
+          <div class="tv-antenna left-antenna"></div>
+          <div class="tv-antenna right-antenna"></div>
+          <div class="tv-bezel">
+            <div class="tv-screen">
+              <video id="tourVideo" playsinline loop></video>
+              <div class="tv-overlay" id="tvOverlay">
+                <button class="tv-play-btn" id="tvPlayBtn"><i class="fa-solid fa-play"></i></button>
+                <span class="tv-label">Demo Preview</span>
+              </div>
+            </div>
+          </div>
+          <div class="tv-progress-bar"><div class="tv-progress-fill" id="tvProgressFill"></div></div>
+          <div class="tv-knobs"><div class="tv-knob"></div><div class="tv-knob"></div></div>
+        </div>
+      </div>
+
+      <!-- FLOOR PLAN -->
+      <div class="floorplan-section">
+        <button class="floorplan-toggle" id="floorplanToggle"><i class="fa-solid fa-map"></i> View Floor Plan</button>
+        <div class="floorplan-map" id="floorplanMap">
+          <div class="map-fold top-left"></div><div class="map-fold top-right"></div>
+          <div class="map-fold bottom-left"></div><div class="map-fold bottom-right"></div>
+          <div class="floorplan-content" id="floorplanContent"></div>
+        </div>
+      </div>
+
+      <!-- AGENT CARD -->
+      <div class="tour-agent-card" id="tourAgentCard"></div>
+    </div>
+
+    <div class="schedule-wrapper">
+      <button class="wax-seal-btn" id="scheduleBtn" onclick="openSchedule()">
+        <span class="seal-inner">Schedule<br/>Viewing</span>
+      </button>
+      <div class="tour-share-btns">
+        <button class="share-btn" onclick="shareProp('whatsapp')" title="Share on WhatsApp"><i class="fa-brands fa-whatsapp"></i></button>
+        <button class="share-btn" onclick="shareProp('copy')" title="Copy link"><i class="fa-solid fa-link"></i></button>
+        <button class="share-btn" onclick="addToFav()" title="Save"><i class="fa-solid fa-heart" id="favIcon"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCHEDULE MODAL -->
+<div class="schedule-modal" id="scheduleModal">
+  <div class="schedule-card">
+    <button class="modal-close" onclick="closeSchedule()"><i class="fa-solid fa-xmark"></i></button>
+    <h3>Schedule a Viewing</h3>
+    <p class="schedule-prop-name" id="schedulePropertyName"></p>
+    <form class="schedule-form" onsubmit="submitSchedule(event)">
+      <input type="text" placeholder="Your Name" required />
+      <input type="email" placeholder="Email Address" required />
+      <input type="tel" placeholder="Phone Number" />
+      <input type="date" required />
+      <select><option>Morning (9am–12pm)</option><option>Afternoon (12pm–5pm)</option><option>Evening (5pm–8pm)</option></select>
+      <textarea placeholder="Any special requests or questions?" rows="2"></textarea>
+      <button type="submit" class="submit-btn">Confirm Viewing</button>
+    </form>
+  </div>
+</div>
+
+<!-- ENQUIRY MODAL -->
+<div class="enquiry-modal" id="enquiryModal">
+  <div class="schedule-card">
+    <button class="modal-close" onclick="closeEnquiry()"><i class="fa-solid fa-xmark"></i></button>
+    <h3>Send Enquiry</h3>
+    <p class="schedule-prop-name" id="enquiryPropName"></p>
+    <form class="schedule-form" onsubmit="submitEnquiry(event)">
+      <input type="text" placeholder="Your Name" required />
+      <input type="email" placeholder="Email Address" required />
+      <textarea placeholder="Your message…" rows="4" required></textarea>
+      <button type="submit" class="submit-btn">Send Message</button>
+    </form>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- FAVOURITES DRAWER -->
+<div class="fav-drawer" id="favDrawer">
+  <div class="fav-drawer-header">
+    <h4><i class="fa-solid fa-heart"></i> Saved Properties</h4>
+    <button onclick="closeFavDrawer()"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="fav-list" id="favList"></div>
+</div>
+<button class="fav-fab" id="favFab" onclick="openFavDrawer()">
+  <i class="fa-solid fa-heart"></i>
+  <span class="fav-count" id="favCount">0</span>
+</button>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

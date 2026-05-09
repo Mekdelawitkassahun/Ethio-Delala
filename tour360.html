@@ -1,0 +1,370 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Ethio-Delala 360</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{width:100%;height:100%;overflow:hidden;background:#0d0806;font-family:sans-serif}
+
+    /* ─── SCENE: viewer sits INSIDE the cube ─── */
+    #scene{
+      width:100%;height:100%;
+      position:relative;
+      perspective:1px;
+      overflow:hidden;
+      cursor:grab;
+      user-select:none;
+    }
+    #scene.drag{cursor:grabbing}
+
+    /* The cube rotates around the viewer */
+    #cube{
+      width:100%;height:100%;
+      position:absolute;
+      transform-style:preserve-3d;
+      transform:rotateX(0deg) rotateY(0deg);
+    }
+
+    /* ─── Each face fills the full viewport ─── */
+    .face{
+      position:absolute;
+      width:100vw;
+      height:100vh;
+      /* FULL image, no zoom — cover fills the face completely */
+      background-size:cover;
+      background-repeat:no-repeat;
+    }
+
+    /*
+      Faces placed at 50vmin from centre so viewer is surrounded.
+      Each face shows a DIFFERENT PHOTO from the rooms array.
+    */
+    .face-front  { transform: translateZ(50vmin); }
+    .face-back   { transform: rotateY(180deg) translateZ(50vmin); }
+    .face-left   { transform: rotateY(-90deg) translateZ(50vmin); }
+    .face-right  { transform: rotateY( 90deg) translateZ(50vmin); }
+    .face-top    { transform: rotateX( 90deg) translateZ(50vmin); }
+    .face-bottom { transform: rotateX(-90deg) translateZ(50vmin); }
+
+    /* ─── Room nav bar ─── */
+    #roomNav{
+      position:absolute;bottom:0;left:0;right:0;
+      display:flex;align-items:center;justify-content:center;
+      gap:8px;padding:14px 16px 18px;
+      background:linear-gradient(transparent,rgba(10,5,3,.9));
+      z-index:30;flex-wrap:wrap;
+    }
+    .rnav-btn{
+      background:rgba(62,39,35,.8);
+      border:1.5px solid rgba(212,163,115,.45);
+      color:rgba(253,248,240,.75);
+      padding:7px 18px;border-radius:20px;
+      font-size:12px;font-weight:700;cursor:pointer;
+      transition:all .22s;backdrop-filter:blur(6px);
+      letter-spacing:.3px;
+    }
+    .rnav-btn:hover,.rnav-btn.active{
+      background:#D4A373;border-color:#D4A373;color:#3E2723;
+    }
+
+    /* ─── HUD ─── */
+    #roomLabel{
+      position:absolute;top:14px;left:14px;z-index:30;
+      background:rgba(62,39,35,.88);color:#FDF8F0;
+      padding:7px 18px;border-radius:20px;
+      font-size:14px;font-weight:700;letter-spacing:.5px;
+      backdrop-filter:blur(6px);pointer-events:none;
+      border:1px solid rgba(212,163,115,.35);
+    }
+    #compass{
+      position:absolute;top:14px;right:14px;z-index:30;
+      background:rgba(62,39,35,.88);color:#D4A373;
+      padding:7px 18px;border-radius:20px;
+      font-size:13px;font-weight:700;letter-spacing:1px;
+      backdrop-filter:blur(6px);pointer-events:none;
+    }
+    #hint{
+      position:absolute;top:50%;left:50%;
+      transform:translate(-50%,-50%);z-index:30;
+      background:rgba(0,0,0,.65);color:#D4A373;
+      padding:10px 22px;border-radius:24px;
+      font-size:13px;font-weight:700;
+      pointer-events:none;transition:opacity 1s;
+      backdrop-filter:blur(4px);
+      border:1px solid rgba(212,163,115,.3);
+    }
+
+    /* ─── Hotspots ─── */
+    .hs{
+      position:absolute;
+      transform:translate(-50%,-50%);
+      z-index:25;cursor:pointer;
+    }
+    .hs-spark{
+      display:block;font-size:2rem;color:#D4A373;
+      animation:pulse 2s ease-in-out infinite;
+      filter:drop-shadow(0 0 10px #D4A373);
+      transition:transform .15s;
+    }
+    .hs:hover .hs-spark{transform:scale(1.7);filter:drop-shadow(0 0 22px #D4A373)}
+    @keyframes pulse{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.35)}}
+    .hs-label{
+      position:absolute;bottom:130%;left:50%;transform:translateX(-50%);
+      background:#3E2723;color:#D4A373;
+      padding:5px 12px;border-radius:6px;
+      font-size:12px;font-weight:700;white-space:nowrap;
+      opacity:0;pointer-events:none;transition:opacity .2s;
+      box-shadow:0 2px 10px rgba(0,0,0,.6);
+    }
+    .hs:hover .hs-label{opacity:1}
+
+    /* ─── Loader ─── */
+    #loader{
+      position:absolute;inset:0;z-index:50;
+      display:flex;flex-direction:column;
+      align-items:center;justify-content:center;
+      background:#0d0806;transition:opacity .5s;gap:14px;
+    }
+    .spinner{
+      width:52px;height:52px;border-radius:50%;
+      border:4px solid rgba(212,163,115,.15);
+      border-top-color:#D4A373;
+      animation:spin .8s linear infinite;
+    }
+    #loader p{color:rgba(212,163,115,.7);font-size:13px;letter-spacing:1px}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* ─── Arrow nav ─── */
+    .arrow-btn{
+      position:absolute;top:50%;transform:translateY(-50%);
+      z-index:30;
+      background:rgba(62,39,35,.8);
+      border:2px solid rgba(212,163,115,.55);
+      color:#D4A373;
+      width:50px;height:50px;border-radius:50%;
+      font-size:20px;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;
+      transition:all .22s;backdrop-filter:blur(6px);
+    }
+    .arrow-btn:hover{background:#D4A373;color:#3E2723;border-color:#D4A373}
+    #arrowLeft{left:14px}
+    #arrowRight{right:14px}
+
+    /* ─── Transition overlay for room change ─── */
+    #transition{
+      position:absolute;inset:0;z-index:40;
+      background:#0d0806;opacity:0;pointer-events:none;
+      transition:opacity .25s;
+    }
+  </style>
+</head>
+<body>
+
+<div id="loader"><div class="spinner"></div><p>Loading 360° Tour…</p></div>
+<div id="transition"></div>
+
+<div id="scene">
+  <div id="cube">
+    <div class="face face-front"></div>
+    <div class="face face-back"></div>
+    <div class="face face-left"></div>
+    <div class="face face-right"></div>
+    <div class="face face-top"></div>
+    <div class="face face-bottom"></div>
+  </div>
+</div>
+
+<div id="roomLabel">Living Room</div>
+<div id="compass">N</div>
+<div id="hint">🖱 Drag to look around 360°</div>
+<button class="arrow-btn" id="arrowLeft">&#8249;</button>
+<button class="arrow-btn" id="arrowRight">&#8250;</button>
+<div id="roomNav"></div>
+
+<script>
+(function(){
+  /* ── State ── */
+  var rotY=0, rotX=0, velX=0, velY=0;
+  var dragging=false, lastX=0, lastY=0;
+  var rooms=[], currentRoom=0;
+  var dirs=['N','NE','E','SE','S','SW','W','NW'];
+
+  var cube       = document.getElementById('cube');
+  var scene      = document.getElementById('scene');
+  var loader     = document.getElementById('loader');
+  var transition = document.getElementById('transition');
+  var hint       = document.getElementById('hint');
+  var compass    = document.getElementById('compass');
+  var label      = document.getElementById('roomLabel');
+  var nav        = document.getElementById('roomNav');
+  var arrowL     = document.getElementById('arrowLeft');
+  var arrowR     = document.getElementById('arrowRight');
+  var faces      = document.querySelectorAll('.face');
+
+  /* ── Apply cube rotation ── */
+  function applyRot(){
+    cube.style.transform='rotateX('+rotX+'deg) rotateY('+rotY+'deg)';
+    var norm=((rotY%360)+360)%360;
+    compass.textContent=dirs[Math.round(norm/45)%8];
+  }
+
+  /* ── Inertia loop ── */
+  (function loop(){
+    if(!dragging){
+      velX*=0.88; velY*=0.88;
+      rotY+=velX; rotX-=velY;
+      rotX=Math.max(-75,Math.min(75,rotX));
+      applyRot();
+    }
+    requestAnimationFrame(loop);
+  })();
+
+  /* ── Mouse drag ── */
+  scene.addEventListener('mousedown',function(e){
+    dragging=true; lastX=e.clientX; lastY=e.clientY;
+    scene.classList.add('drag'); e.preventDefault();
+  });
+  window.addEventListener('mousemove',function(e){
+    if(!dragging)return;
+    var dx=e.clientX-lastX, dy=e.clientY-lastY;
+    velX=dx*0.5; velY=dy*0.5;
+    rotY+=velX; rotX-=velY;
+    rotX=Math.max(-75,Math.min(75,rotX));
+    lastX=e.clientX; lastY=e.clientY;
+    applyRot();
+  });
+  window.addEventListener('mouseup',function(){dragging=false;scene.classList.remove('drag');});
+
+  /* ── Touch drag ── */
+  scene.addEventListener('touchstart',function(e){
+    lastX=e.touches[0].clientX; lastY=e.touches[0].clientY; dragging=true;
+  },{passive:true});
+  scene.addEventListener('touchmove',function(e){
+    if(!dragging)return;
+    var dx=e.touches[0].clientX-lastX, dy=e.touches[0].clientY-lastY;
+    velX=dx*0.5; velY=dy*0.5;
+    rotY+=velX; rotX-=velY;
+    rotX=Math.max(-75,Math.min(75,rotX));
+    lastX=e.touches[0].clientX; lastY=e.touches[0].clientY;
+    applyRot();
+  },{passive:true});
+  scene.addEventListener('touchend',function(){dragging=false;});
+
+  /* ── Load a room ── */
+  /*
+    KEY FIX: Each face gets a DIFFERENT room image.
+    face-front  = current room
+    face-right  = next room
+    face-back   = room after that
+    face-left   = previous room
+    face-top    = same as current (ceiling view)
+    face-bottom = same as current (floor view)
+    This way dragging left/right actually reveals the next/prev room photo.
+  */
+  function loadRoom(idx){
+    if(!rooms.length)return;
+    idx=((idx%rooms.length)+rooms.length)%rooms.length;
+    currentRoom=idx;
+
+    /* Flash transition */
+    transition.style.opacity='1';
+    transition.style.pointerEvents='all';
+
+    var n=rooms.length;
+    var assignments=[
+      rooms[idx].img,                          /* front  */
+      rooms[(idx+1)%n].img,                    /* right  */
+      rooms[(idx+2)%n].img,                    /* back   */
+      rooms[((idx-1)+n)%n].img,               /* left   */
+      rooms[idx].img,                          /* top    */
+      rooms[idx].img                           /* bottom */
+    ];
+
+    /* Preload all images then apply */
+    var loaded=0;
+    assignments.forEach(function(src,i){
+      var img=new Image();
+      img.crossOrigin='anonymous';
+      img.onload=img.onerror=function(){
+        faces[i].style.backgroundImage='url('+src+')';
+        faces[i].style.backgroundSize='cover';
+        faces[i].style.backgroundPosition='center';
+        loaded++;
+        if(loaded===assignments.length){
+          /* Reset rotation */
+          rotY=0; rotX=0; velX=0; velY=0;
+          applyRot();
+          /* Fade in */
+          setTimeout(function(){
+            transition.style.opacity='0';
+            transition.style.pointerEvents='none';
+            loader.style.opacity='0';
+            loader.style.pointerEvents='none';
+          },80);
+        }
+      };
+      img.src=src;
+    });
+
+    /* Update label */
+    label.textContent=rooms[idx].name||'Room';
+
+    /* Update nav */
+    document.querySelectorAll('.rnav-btn').forEach(function(b,i){
+      b.classList.toggle('active',i===idx);
+    });
+
+    /* Update hotspots */
+    scene.querySelectorAll('.hs').forEach(function(h){h.remove();});
+    (rooms[idx].hotspots||[]).forEach(function(h){
+      var el=document.createElement('div');
+      el.className='hs';
+      el.style.left=h.x+'%';
+      el.style.top=h.y+'%';
+      el.innerHTML='<span class="hs-spark">\u2736</span><span class="hs-label">'+h.label+'</span>';
+      scene.appendChild(el);
+    });
+  }
+
+  /* ── Build room nav buttons ── */
+  function buildNav(){
+    nav.innerHTML='';
+    rooms.forEach(function(r,i){
+      var btn=document.createElement('button');
+      btn.className='rnav-btn'+(i===0?' active':'');
+      btn.textContent=r.name;
+      btn.onclick=function(){ loadRoom(i); };
+      nav.appendChild(btn);
+    });
+  }
+
+  /* ── Arrow buttons ── */
+  arrowL.onclick=function(){ loadRoom(currentRoom-1); };
+  arrowR.onclick=function(){ loadRoom(currentRoom+1); };
+
+  /* ── Messages from parent ── */
+  window.addEventListener('message',function(e){
+    if(!e.data)return;
+    /* initTour: full rooms array */
+    if(e.data.type==='initTour'){
+      rooms=e.data.rooms||[];
+      buildNav();
+      loadRoom(0);
+    }
+    /* goRoom: jump to specific room index */
+    if(e.data.type==='goRoom'){
+      loadRoom(e.data.idx||0);
+    }
+  });
+
+  /* ── Hide hint ── */
+  setTimeout(function(){ hint.style.opacity='0'; },3500);
+
+  /* ── Signal ready to parent ── */
+  window.parent.postMessage({type:'tourReady'},'*');
+})();
+</script>
+</body>
+</html>

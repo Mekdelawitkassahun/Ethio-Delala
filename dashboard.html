@@ -1,0 +1,194 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Broker Dashboard – Ethio-Delala</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="dashboard.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body class="dashboard-body">
+
+<div class="dash-layout">
+
+  <!-- Sidebar -->
+  <aside class="dash-sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-icon">🏡</span>
+      <span class="logo-text">Ethio-Delala</span>
+    </div>
+    <nav class="dash-nav">
+      <a href="#" class="dash-nav-link active" data-tab="overview"><i class="fa-solid fa-gauge"></i> Overview</a>
+      <a href="#" class="dash-nav-link" data-tab="listings"><i class="fa-solid fa-list"></i> Listings</a>
+      <a href="#" class="dash-nav-link" data-tab="add"><i class="fa-solid fa-plus"></i> Add Listing</a>
+      <a href="#" class="dash-nav-link" data-tab="viewings"><i class="fa-solid fa-calendar"></i> Viewings</a>
+      <a href="index.html" class="dash-nav-link"><i class="fa-solid fa-arrow-left"></i> Back to Site</a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <main class="dash-main">
+
+    <!-- Overview Tab -->
+    <div class="dash-tab active" id="tab-overview">
+      <div class="dash-header">
+        <h1>Good morning, Broker <span class="gold-text">✦</span></h1>
+        <p>Here is your portfolio at a glance.</p>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card"><i class="fa-solid fa-house"></i><span class="s-num" id="statTotal">0</span><span class="s-label">Total Listings</span></div>
+        <div class="stat-card"><i class="fa-solid fa-key"></i><span class="s-num" id="statRent">0</span><span class="s-label">For Rent</span></div>
+        <div class="stat-card"><i class="fa-solid fa-tag"></i><span class="s-num" id="statSell">0</span><span class="s-label">For Sale</span></div>
+        <div class="stat-card"><i class="fa-solid fa-calendar-check"></i><span class="s-num" id="statViewings">3</span><span class="s-label">Viewings This Week</span></div>
+      </div>
+      <div class="recent-section">
+        <h2>Recent Listings</h2>
+        <div class="recent-grid" id="recentGrid"></div>
+      </div>
+    </div>
+
+    <!-- Listings Tab -->
+    <div class="dash-tab" id="tab-listings">
+      <div class="dash-header">
+        <h1>All Listings</h1>
+        <button class="add-btn" onclick="switchTab('add')"><i class="fa-solid fa-plus"></i> Add New</button>
+      </div>
+      <div class="listings-table-wrap">
+        <table class="listings-table">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Type</th>
+              <th>Mode</th>
+              <th>Price</th>
+              <th>Beds</th>
+              <th>Baths</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="listingsTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Add Listing Tab -->
+    <div class="dash-tab" id="tab-add">
+      <div class="dash-header">
+        <h1>Add New Listing</h1>
+      </div>
+      <form class="add-form" id="addForm" onsubmit="addListing(event)">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Property Title</label>
+            <input type="text" id="fTitle" placeholder="e.g. The Amber Penthouse" required />
+          </div>
+          <div class="form-group">
+            <label>Address</label>
+            <input type="text" id="fAddress" placeholder="123 Main St, City, State" required />
+          </div>
+          <div class="form-group">
+            <label>Listing Type</label>
+            <select id="fMode">
+              <option value="rent">For Rent</option>
+              <option value="sell">For Sale</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Property Type</label>
+            <select id="fType">
+              <option value="house">House</option>
+              <option value="apartment">Apartment</option>
+              <option value="condo">Condo</option>
+              <option value="villa">Villa</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Price</label>
+            <input type="number" id="fPrice" placeholder="e.g. 2500 or 450000" required />
+          </div>
+          <div class="form-group">
+            <label>Bedrooms</label>
+            <input type="number" id="fBeds" min="0" max="20" placeholder="3" required />
+          </div>
+          <div class="form-group">
+            <label>Bathrooms</label>
+            <input type="number" id="fBaths" min="0" max="20" placeholder="2" required />
+          </div>
+          <div class="form-group">
+            <label>Square Footage</label>
+            <input type="number" id="fSqft" placeholder="1800" required />
+          </div>
+          <div class="form-group full-width">
+            <label>Description</label>
+            <textarea id="fDesc" rows="3" placeholder="Describe the property..."></textarea>
+          </div>
+          <div class="form-group full-width">
+            <label>Image URL</label>
+            <input type="url" id="fImage" placeholder="https://..." />
+          </div>
+          <div class="form-group full-width">
+            <label>Demo Video URL</label>
+            <input type="url" id="fVideo" placeholder="https://..." />
+          </div>
+          <div class="form-group full-width">
+            <label>Floor Plan Notes</label>
+            <input type="text" id="fFloor" placeholder="e.g. 3BR, 2BA, Open Plan Kitchen" />
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="submit-btn">
+            <i class="fa-solid fa-plus"></i> Add Listing
+          </button>
+          <button type="reset" class="reset-btn">Clear</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Viewings Tab -->
+    <div class="dash-tab" id="tab-viewings">
+      <div class="dash-header">
+        <h1>Scheduled Viewings</h1>
+      </div>
+      <div class="viewings-list" id="viewingsList">
+        <div class="viewing-card">
+          <div class="viewing-date"><span class="v-day">12</span><span class="v-month">May</span></div>
+          <div class="viewing-info">
+            <h4>The Amber Penthouse</h4>
+            <p><i class="fa-solid fa-user"></i> Sarah Mitchell</p>
+            <p><i class="fa-solid fa-clock"></i> Morning (9am–12pm)</p>
+          </div>
+          <span class="viewing-badge confirmed">Confirmed</span>
+        </div>
+        <div class="viewing-card">
+          <div class="viewing-date"><span class="v-day">14</span><span class="v-month">May</span></div>
+          <div class="viewing-info">
+            <h4>Cedarwood Villa</h4>
+            <p><i class="fa-solid fa-user"></i> James Thornton</p>
+            <p><i class="fa-solid fa-clock"></i> Afternoon (12pm–5pm)</p>
+          </div>
+          <span class="viewing-badge pending">Pending</span>
+        </div>
+        <div class="viewing-card">
+          <div class="viewing-date"><span class="v-day">15</span><span class="v-month">May</span></div>
+          <div class="viewing-info">
+            <h4>Hazel Creek Cottage</h4>
+            <p><i class="fa-solid fa-user"></i> Emma Clarke</p>
+            <p><i class="fa-solid fa-clock"></i> Evening (5pm–8pm)</p>
+          </div>
+          <span class="viewing-badge confirmed">Confirmed</span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="data.js"></script>
+<script src="dashboard.js"></script>
+</body>
+</html>
+
